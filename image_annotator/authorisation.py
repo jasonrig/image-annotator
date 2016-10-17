@@ -120,7 +120,6 @@ def authorized(fn):
     def _wrap(*args, **kwargs):
         if 'Authorization' not in request.headers:
             # Unauthorized
-            print("No token in header")
             abort(401)
             return None
 
