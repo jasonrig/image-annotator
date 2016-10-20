@@ -21,6 +21,7 @@ class FetchImage(Resource):
     def get(self, userid):
         return db.get_random_unannotated_image(userid, 5)
 
+
 @ns.route('/raw/<string:id>')
 class FetchRawImage(Resource):
 
