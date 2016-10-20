@@ -11,3 +11,8 @@ annotation = api.model('Image annotation', {
                            description='Height of bounding box'),
     'width': fields.Float(required=True, description='Width of bounding box')
 })
+
+image = api.model('Image', {
+    'path': fields.String(required=True, description='Path to the image file'),
+    'mimetype': fields.String(required=True, description='The image mimetype', default="image/png")
+})

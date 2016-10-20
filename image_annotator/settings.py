@@ -11,18 +11,19 @@ RESTPLUS_VALIDATE = True
 RESTPLUS_MASK_SWAGGER = False
 RESTPLUS_ERROR_404_HELP = False
 
-# SQLAlchemy settings
-SQLALCHEMY_DATABASE_URI = 'sqlite:///../db.sqlite'
-SQLALCHEMY_TRACK_MODIFICATIONS = False
+# MongoDB settings
+MONGO_URL = 'mongodb://localhost:27017/'
+MONGO_DB_NAME = 'image-annotator'
 
 # Auth options
 RESTRICT_ACCESS_BY_DOMAIN = ''
 JWT_SECRET = 'eeraid8Ahch7revu8eeweiKoh2tua9eeyae9aigeu8thah1oy5'
 JWT_EXPIRY = 24*60*60 # Seconds
+ADMIN_USER = 'test@example.com'
 
 # Override settings from environment if specified
 for name, val in list(sys.modules[__name__].__dict__.items()):
-    if name == name.upper():
+    if name == name.upper() and name[0] is not '_':
         env = os.environ.get(name, val)
         if isinstance(val, int):
             if isinstance(env, str):

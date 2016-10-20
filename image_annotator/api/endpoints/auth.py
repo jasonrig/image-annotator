@@ -1,4 +1,3 @@
-import jwt
 from flask_restplus import Resource
 
 from image_annotator.api.restplus import api

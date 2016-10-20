@@ -42,9 +42,6 @@ def validate_gtoken_token(access_token):
 
     Returns None on fail, and an e-mail on success'''
 
-    if settings.FLASK_DEBUG:
-        return 'test@example.com'
-
     h = Http()
     resp, cont = h.request("https://www.googleapis.com/oauth2/v2/userinfo",
                            headers={'Host': 'www.googleapis.com',
@@ -118,6 +115,10 @@ def authorized(fn):
     """
 
     def _wrap(*args, **kwargs):
+
+        if settings.FLASK_DEBUG:
+            return fn(userid='test@example.com', *args, **kwargs)
+
         if 'Authorization' not in request.headers:
             # Unauthorized
             abort(401)
@@ -125,6 +126,38 @@ def authorized(fn):
 
         userid = verify_token(request.headers['Authorization'])
         if userid is None:
+            abort(401)
+            return None
+
+        return fn(userid=userid, *args, **kwargs)
+
+    return _wrap
+
+def authorized_admin(fn):
+    """Decorator that checks that requests
+    contain an id-token in the request header.
+    userid will be None if the
+    authentication failed, and have an id otherwise.
+
+    Usage:
+    @app.route("/")
+    @authorized
+    def secured_root(userid=None):
+        pass
+    """
+
+    def _wrap(*args, **kwargs):
+
+        if settings.FLASK_DEBUG:
+            return fn(userid='test@example.com', *args, **kwargs)
+
+        if 'Authorization' not in request.headers:
+            # Unauthorized
+            abort(401)
+            return None
+
+        userid = verify_token(request.headers['Authorization'])
+        if userid is not settings.ADMIN_USER:
             abort(401)
             return None
 
