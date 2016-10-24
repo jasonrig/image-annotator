@@ -14,5 +14,5 @@ annotation = api.model('Image annotation', {
 
 image = api.model('Image', {
     'path': fields.String(required=True, description='Path to the image file'),
-    'mimetype': fields.String(required=True, description='The image mimetype', default="image/png")
+    'mimetype': fields.String(required=False, description='The image mimetype', default="image/png")
 })
